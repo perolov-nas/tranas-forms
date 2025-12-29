@@ -1,0 +1,263 @@
+{
+    "key": "group_tranas_forms",
+    "title": "Tranås Forms - Formulärinställningar",
+    "fields": [
+        {
+            "key": "field_tranas_forms_repeater",
+            "label": "Formulärfält",
+            "name": "tranas_forms",
+            "type": "repeater",
+            "instructions": "Lägg till fält som ska visas i formuläret.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_tranas_forms_label",
+            "min": 0,
+            "max": 0,
+            "layout": "row",
+            "button_label": "Lägg till fält",
+            "sub_fields": [
+                {
+                    "key": "field_tranas_forms_label",
+                    "label": "Etikett",
+                    "name": "label",
+                    "type": "text",
+                    "instructions": "Fältets etikett/namn som visas för besökaren.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "30",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "T.ex. Namn, E-post, Meddelande",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_tranas_forms_type",
+                    "label": "Fälttyp",
+                    "name": "type",
+                    "type": "select",
+                    "instructions": "Vilken typ av inmatningsfält.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "20",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "text": "Text",
+                        "email": "E-post",
+                        "tel": "Telefon",
+                        "number": "Nummer",
+                        "textarea": "Textarea",
+                        "select": "Dropdown (select)",
+                        "radio": "Radioknappar",
+                        "checkbox": "Kryssrutor",
+                        "file": "Filuppladdning"
+                    },
+                    "default_value": "text",
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "return_format": "value",
+                    "ajax": 0,
+                    "placeholder": ""
+                },
+                {
+                    "key": "field_tranas_forms_required",
+                    "label": "Obligatoriskt",
+                    "name": "required",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "15",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "ui": 1,
+                    "ui_on_text": "Ja",
+                    "ui_off_text": "Nej"
+                },
+                {
+                    "key": "field_tranas_forms_options",
+                    "label": "Alternativ",
+                    "name": "options",
+                    "type": "textarea",
+                    "instructions": "Ett alternativ per rad. Används för select, radio och checkbox.",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_tranas_forms_type",
+                                "operator": "==",
+                                "value": "select"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_tranas_forms_type",
+                                "operator": "==",
+                                "value": "radio"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_tranas_forms_type",
+                                "operator": "==",
+                                "value": "checkbox"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "35",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "Alternativ 1\nAlternativ 2\nAlternativ 3",
+                    "maxlength": "",
+                    "rows": 4,
+                    "new_lines": ""
+                },
+                {
+                    "key": "field_tranas_forms_allowed_types",
+                    "label": "Tillåtna filtyper",
+                    "name": "allowed_types",
+                    "type": "text",
+                    "instructions": "Kommaseparerade filtyper, t.ex. pdf,doc,docx,jpg,png. Lämna tomt för standard (pdf,doc,docx,jpg,jpeg,png,gif).",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_tranas_forms_type",
+                                "operator": "==",
+                                "value": "file"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "20",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "pdf,doc,docx,jpg,png"
+                },
+                {
+                    "key": "field_tranas_forms_max_size",
+                    "label": "Max filstorlek (MB)",
+                    "name": "max_size",
+                    "type": "number",
+                    "instructions": "Maximal filstorlek i megabyte. Standard är 5 MB.",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_tranas_forms_type",
+                                "operator": "==",
+                                "value": "file"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "15",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 5,
+                    "min": 1,
+                    "max": 25
+                }
+            ]
+        },
+        {
+            "key": "field_tranas_forms_recipient",
+            "label": "Mottagare",
+            "name": "recipient_email",
+            "type": "email",
+            "instructions": "E-postadress som tar emot formulärsvar. Lämna tomt för att använda admin-e-post.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "mottagare@exempel.se",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_tranas_forms_submit_label",
+            "label": "Knapptext",
+            "name": "submit_label",
+            "type": "text",
+            "instructions": "Text på skicka-knappen.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Skicka",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_tranas_forms_success_message",
+            "label": "Bekräftelsemeddelande",
+            "name": "success_message",
+            "type": "textarea",
+            "instructions": "Meddelande som visas efter lyckat inskick.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Tack för ditt meddelande!",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": 2,
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "tranas_form"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Fältgrupp för Tranås Forms formulärplugin.",
+    "show_in_rest": 0,
+    "modified": 1734969600
+}
+
