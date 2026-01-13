@@ -86,7 +86,14 @@ class Tranas_Forms_Plugin {
      * Enqueue frontassets
      */
     public function enqueue_assets() {
-        //wp_enqueue_style('tranas-forms', plugins_url('assets/forms.css', __FILE__), [], '1.0.0');
+        // Plugin CSS (kompilerad från SCSS med delade variabler från style-core)
+        wp_enqueue_style(
+            'tranas-forms-styles',
+            plugins_url('assets/css/main.css', __FILE__),
+            [],
+            '1.0.0'
+        );
+        
         wp_enqueue_script('tranas-forms', plugins_url('assets/forms.js', __FILE__), [], '1.1.0', true);
         wp_localize_script('tranas-forms', 'tranasFormsAjax', [
             'ajaxurl' => admin_url('admin-ajax.php'),
