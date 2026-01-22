@@ -1,1 +1,18 @@
-.wrapper a{color:var(--link-color);transition:all .2s ease}.wrapper a:hover{color:var(--link-hover-color)}.wrapper a:hover h3,.wrapper a:hover h4,.wrapper a:hover h5,.wrapper a:hover p{text-decoration:underline;text-decoration-color:var(--link-hover-color);text-decoration-thickness:1px;text-underline-offset:2px}.tranas-form{display:flex;flex-direction:column;gap:2rem;max-width:600px}.tf-field{display:flex;flex-direction:column;gap:.25rem}.tf-label{font-weight:600;color:var(--color-text)}.tf-required{color:#dc3232}.tranas-form input[type=text],.tranas-form input[type=email],.tranas-form input[type=tel],.tranas-form input[type=url],.tranas-form input[type=number],.tranas-form input[type=date],.tranas-form input[type=file],.tranas-form textarea,.tranas-form select{width:100%;padding:.5rem 1rem;border:2px solid var(--box-border);border-radius:.75rem;background:var(--color-background);color:var(--color-text);font-size:var(--body-size);transition:border-color .2s ease}.tranas-form input[type=text]:focus,.tranas-form input[type=email]:focus,.tranas-form input[type=tel]:focus,.tranas-form input[type=url]:focus,.tranas-form input[type=number]:focus,.tranas-form input[type=date]:focus,.tranas-form input[type=file]:focus,.tranas-form textarea:focus,.tranas-form select:focus{outline:none;border-color:var(--box-border-hover)}.tranas-form textarea{min-height:150px;resize:vertical}.tf-fieldset{border:none;padding:0;margin:0}.tf-choices{display:flex;flex-direction:column;gap:.5rem;margin-top:.25rem}.tf-choice{display:flex;align-items:center;gap:.5rem;cursor:pointer}.tf-choice input[type=radio],.tf-choice input[type=checkbox]{width:auto;margin:0}.tf-file-info{font-size:.875em;color:var(--color-text);opacity:.7}.tf-hp{position:absolute;left:-9999px;opacity:0;pointer-events:none}.tf-message-container:empty{display:none}.tf-message-container{padding:1rem;border-radius:.75rem}.tf-message-container.tf-success{background:rgba(70,180,80,.1);border:1px solid #46b450;color:#2e7d32}.tf-message-container.tf-error{background:rgba(220,50,50,.1);border:1px solid #dc3232;color:#dc3232}.tf-submit{display:inline-flex;align-items:center;justify-content:center;width:auto;gap:.5rem;cursor:pointer;text-decoration:none;border-radius:100px;padding:.5rem 1rem;transition:all .2s ease;border:2px solid var(--box-border);position:relative;letter-spacing:.01em;text-underline-offset:4px;font-size:var(--body-size)}.tf-submit.tranas-image-upload__btn--select{color:var(--submit-color-text)}.tf-submit{min-height:44px;min-width:44px}.tf-submit:hover{outline:2px solid var(--box-border-hover);outline-offset:2px;transform:scale(1.02) translateY(-1px)}.tf-submit:focus-visible{outline:3px solid var(--box-border-hover, currentColor);outline-offset:3px}.tf-submit:focus:not(:focus-visible){outline:none}.tf-submit:focus{outline:2px solid var(--box-border-hover);outline-offset:2px}@media(prefers-reduced-motion: reduce){.tf-submit{transition:none}.tf-submit:hover{transform:none}}.tf-submit{align-self:flex-start;background:var(--button-background);color:var(--button-color)}.tf-submit-loading{display:none}.tf-submit.is-loading .tf-submit-text{display:none}.tf-submit.is-loading .tf-submit-loading{display:inline}/*# sourceMappingURL=main.css.map */
+/* Error: Undefined variable.
+ *    ,
+ * 11 |     gap: $gap;
+ *    |          ^^^^
+ *    '
+ *   assets/scss/_forms.scss 11:10  @use
+ *   assets/scss/main.scss 6:1      root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined variable.\a    \2577 \a 11 \2502      gap: $gap;\a    \2502           ^^^^\a    \2575 \a   assets/scss/_forms.scss 11:10  @use\a   assets/scss/main.scss 6:1      root stylesheet";
+}
