@@ -1,0 +1,12 @@
+{
+    "name": "tranas-forms",
+    "version": "2",
+    "description": "WordPress plugin för formulärhantering",
+    "main": "index.js",
+    "scripts": {
+        "update": "node scripts/sync-version.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "GPL2"
+}

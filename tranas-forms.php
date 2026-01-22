@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Tranås Forms
  * Description: Formulärplugin som använder ACF för fälten, skickar e‑post via wp_mail(), och sparar/listar inskick (inkl. misslyckade).
- * Version: 1.0.0
+ * Version: 2
  * Author: Per Olov Näs
  * Text Domain: tranas-forms
  */
@@ -561,6 +561,15 @@ class Tranas_Forms_Plugin {
             'tranas-forms-submissions',
             [$this, 'render_submissions_page']
         );
+        
+        add_submenu_page(
+            'edit.php?post_type=tranas_form',
+            __('Inställningar', 'tranas-forms'),
+            __('Inställningar', 'tranas-forms'),
+            'manage_options',
+            'tranas-forms-settings',
+            [$this, 'render_settings_page']
+        );
     }
 
     /**
@@ -761,6 +770,46 @@ class Tranas_Forms_Plugin {
         }
 
         echo '</div>';
+    }
+    
+    /**
+     * Render settings page
+     */
+    public function render_settings_page() {
+        $version = $this->get_plugin_version();
+        ?>
+        <div class="wrap tranas-forms-wrap">
+            <h1><?php _e('Inställningar', 'tranas-forms'); ?></h1>
+            
+            <div class="card" style="max-width: 800px; padding: 20px;">
+                <h2><?php _e('Version-information', 'tranas-forms'); ?></h2>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row"><?php _e('Version', 'tranas-forms'); ?></th>
+                        <td><strong>v<?php echo esc_html($version); ?></strong></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <?php
+    }
+    
+    /**
+     * Get plugin version from package.json or plugin header
+     */
+    private function get_plugin_version() {
+        // Try to read from package.json first
+        $package_json_path = plugin_dir_path(__FILE__) . 'package.json';
+        if (file_exists($package_json_path)) {
+            $package_json = json_decode(file_get_contents($package_json_path), true);
+            if (isset($package_json['version'])) {
+                return $package_json['version'];
+            }
+        }
+        
+        // Fallback to plugin header
+        $plugin_data = get_file_data(__FILE__, ['Version' => 'Version'], 'plugin');
+        return isset($plugin_data['Version']) ? $plugin_data['Version'] : '1';
     }
 }
 
