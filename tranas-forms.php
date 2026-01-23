@@ -31,6 +31,10 @@ class Tranas_Forms_Plugin {
 
         // ACF JSON sync
         add_filter('acf/settings/load_json', [$this, 'acf_json_load_point']);
+
+        // Registrera dynamiska shortcodes när formulär sparas (efter ACF har sparat)
+        add_action('acf/save_post', [$this, 'register_form_shortcode_after_save'], 20);
+        add_action('init', [$this, 'register_all_form_shortcodes'], 20);
     }
 
     /**
@@ -101,7 +105,67 @@ class Tranas_Forms_Plugin {
     }
 
     /**
-     * Shortcode: [tranas_form id="FORM_ID"]
+     * Registrera alla formulär-shortcodes vid init
+     */
+    public function register_all_form_shortcodes() {
+        if (!function_exists('get_field')) {
+            return;
+        }
+
+        $forms = get_posts([
+            'post_type' => 'tranas_form',
+            'post_status' => 'any',
+            'numberposts' => -1,
+            'fields' => 'ids',
+        ]);
+
+        foreach ($forms as $form_id) {
+            $slug = get_field('shortcode_slug', $form_id);
+            if (!empty($slug)) {
+                $slug = sanitize_key($slug);
+                if (!empty($slug)) {
+                    $shortcode_name = 'tranas_form_' . $slug;
+                    // Ta bort eventuell befintlig shortcode först (för att uppdatera)
+                    remove_shortcode($shortcode_name);
+                    // Registrera shortcode
+                    add_shortcode($shortcode_name, function() use ($form_id) {
+                        return $this->shortcode_render_form(['id' => $form_id]);
+                    });
+                }
+            }
+        }
+    }
+
+    /**
+     * Registrera shortcode för ett specifikt formulär när det sparas (efter ACF)
+     */
+    public function register_form_shortcode_after_save($post_id) {
+        // Kontrollera att det är rätt post type
+        if (get_post_type($post_id) !== 'tranas_form') {
+            return;
+        }
+
+        if (!function_exists('get_field')) {
+            return;
+        }
+
+        $slug = get_field('shortcode_slug', $post_id);
+        if (!empty($slug)) {
+            $slug = sanitize_key($slug);
+            if (!empty($slug)) {
+                $shortcode_name = 'tranas_form_' . $slug;
+                // Ta bort eventuell befintlig shortcode först
+                remove_shortcode($shortcode_name);
+                // Registrera ny shortcode
+                add_shortcode($shortcode_name, function() use ($post_id) {
+                    return $this->shortcode_render_form(['id' => $post_id]);
+                });
+            }
+        }
+    }
+
+    /**
+     * Shortcode: [tranas_form id="FORM_ID"] eller [tranas_form_SLUG]
      */
     public function shortcode_render_form($atts) {
         $atts = shortcode_atts(['id' => 0], $atts);
@@ -285,9 +349,20 @@ class Tranas_Forms_Plugin {
         }
 
         $fields = function_exists('get_field') ? get_field('tranas_forms', $form_id) : [];
-        $recipient = function_exists('get_field') ? get_field('recipient_email', $form_id) : '';
+        
+        // Hämta e-postadress: formulär-specifik -> global standard -> admin e-post
+        $recipient = '';
+        if (function_exists('get_field')) {
+            $recipient = get_field('recipient_email', $form_id);
+        }
         if (empty($recipient)) {
-            $recipient = get_option('admin_email');
+            // Kolla global standard från inställningar
+            $global_recipient = get_option('tranas_forms_default_email', '');
+            if (!empty($global_recipient)) {
+                $recipient = $global_recipient;
+            } else {
+                $recipient = get_option('admin_email');
+            }
         }
 
         $data = [];
@@ -776,20 +851,65 @@ class Tranas_Forms_Plugin {
      * Render settings page
      */
     public function render_settings_page() {
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+
+        // Hantera formulärpost
+        if (isset($_POST['tranas_forms_settings_submit']) && check_admin_referer('tranas_forms_settings')) {
+            $default_email = sanitize_email($_POST['tranas_forms_default_email'] ?? '');
+            update_option('tranas_forms_default_email', $default_email);
+            
+            echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Inställningar sparade.', 'tranas-forms') . '</p></div>';
+        }
+
         $version = $this->get_plugin_version();
+        $default_email = get_option('tranas_forms_default_email', '');
         ?>
         <div class="wrap tranas-forms-wrap">
             <h1><?php _e('Inställningar', 'tranas-forms'); ?></h1>
             
-            <div class="card" style="max-width: 800px; padding: 20px;">
-                <h2><?php _e('Version-information', 'tranas-forms'); ?></h2>
-                <table class="form-table">
-                    <tr>
-                        <th scope="row"><?php _e('Version', 'tranas-forms'); ?></th>
-                        <td><strong>v<?php echo esc_html($version); ?></strong></td>
-                    </tr>
-                </table>
-            </div>
+            <form method="post" action="">
+                <?php wp_nonce_field('tranas_forms_settings'); ?>
+                
+                <div class="card" style="max-width: 800px; padding: 20px; margin-top: 20px;">
+                    <h2><?php _e('E-postinställningar', 'tranas-forms'); ?></h2>
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row">
+                                <label for="tranas_forms_default_email"><?php _e('Standard e-postadress', 'tranas-forms'); ?></label>
+                            </th>
+                            <td>
+                                <input 
+                                    type="email" 
+                                    id="tranas_forms_default_email" 
+                                    name="tranas_forms_default_email" 
+                                    value="<?php echo esc_attr($default_email); ?>" 
+                                    class="regular-text"
+                                    placeholder="<?php echo esc_attr(get_option('admin_email')); ?>"
+                                />
+                                <p class="description">
+                                    <?php _e('Standard e-postadress som används när inget formulär-specifik e-postadress är angiven. Lämna tomt för att använda admin-e-post.', 'tranas-forms'); ?>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card" style="max-width: 800px; padding: 20px; margin-top: 20px;">
+                    <h2><?php _e('Version-information', 'tranas-forms'); ?></h2>
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row"><?php _e('Version', 'tranas-forms'); ?></th>
+                            <td><strong>v<?php echo esc_html($version); ?></strong></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <p class="submit">
+                    <input type="submit" name="tranas_forms_settings_submit" class="button button-primary" value="<?php esc_attr_e('Spara inställningar', 'tranas-forms'); ?>" />
+                </p>
+            </form>
         </div>
         <?php
     }

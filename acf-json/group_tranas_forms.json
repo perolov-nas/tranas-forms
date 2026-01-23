@@ -185,10 +185,28 @@
         },
         {
             "key": "field_tranas_forms_recipient",
-            "label": "Mottagare",
+            "label": "E-postadress för mottagare",
             "name": "recipient_email",
             "type": "email",
-            "instructions": "E-postadress som tar emot formulärsvar. Lämna tomt för att använda admin-e-post.",
+            "instructions": "E-postadress som tar emot formulärsvar för detta formulär. Lämna tomt för att använda global standard (från Inställningar) eller admin-e-post.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "mottagare@exempel.se",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_tranas_forms_shortcode_slug",
+            "label": "Shortcode",
+            "name": "shortcode_slug",
+            "type": "text",
+            "instructions": "Unik slug för formulärets shortcode. Används som [tranas_form_SLUG]. Endast små bokstäver, siffror och bindestreck. Lämna tomt för att använda ID-baserad shortcode.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -197,9 +215,10 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "mottagare@exempel.se",
+            "placeholder": "t.ex. kontakt, anmalan, support",
             "prepend": "",
-            "append": ""
+            "append": "",
+            "maxlength": ""
         },
         {
             "key": "field_tranas_forms_submit_label",
@@ -258,6 +277,6 @@
     "active": true,
     "description": "Fältgrupp för Tranås Forms formulärplugin.",
     "show_in_rest": 0,
-    "modified": 1734969600
+    "modified": 1735056000
 }
 

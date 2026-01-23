@@ -8,7 +8,7 @@
 .tranas-form {
     display: flex;
     flex-direction: column;
-    gap: $gap;
+    gap: $gutter;
     max-width: 600px;
 }
 
@@ -16,7 +16,7 @@
 .tf-field {
     display: flex;
     flex-direction: column;
-    gap: calc($unit / 4);
+    gap: calc($gutter / 4);
 }
 
 // Labels
@@ -41,18 +41,7 @@
 .tranas-form textarea,
 .tranas-form select {
     width: 100%;
-    padding: calc($unit / 2) $unit;
-    border: 2px solid var(--box-border);
-    border-radius: $border-radius-default;
-    background: var(--color-background);
-    color: var(--color-text);
-    font-size: var(--body-size);
-    transition: border-color 0.2s ease;
-
-    &:focus {
-        outline: none;
-        border-color: var(--box-border-hover);
-    }
+    padding: calc($gutter / 2) $gutter;
 }
 
 .tranas-form textarea {
@@ -70,14 +59,14 @@
 .tf-choices {
     display: flex;
     flex-direction: column;
-    gap: calc($unit / 2);
-    margin-top: calc($unit / 4);
+    gap: calc($gutter / 2);
+    margin-top: calc($gutter / 4);
 }
 
 .tf-choice {
     display: flex;
     align-items: center;
-    gap: calc($unit / 2);
+    gap: calc($gutter / 2);
     cursor: pointer;
 
     input[type="radio"],
@@ -90,7 +79,6 @@
 // Fil-uppladdning info
 .tf-file-info {
     font-size: 0.875em;
-    color: var(--color-text);
     opacity: 0.7;
 }
 
@@ -108,8 +96,7 @@
         display: none;
     }
 
-    padding: $unit;
-    border-radius: $border-radius-default;
+    padding: $gutter; 
     
     &.tf-success {
         background: rgba(70, 180, 80, 0.1);
@@ -126,10 +113,7 @@
 
 // Submit-knapp
 .tf-submit {
-    @include button;
     align-self: flex-start;
-    background: var(--button-background);
-    color: var(--button-color);
 }
 
 .tf-submit-loading {
